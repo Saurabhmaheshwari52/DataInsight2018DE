@@ -133,6 +133,30 @@ def extract_certified_data(data, val, top_val):
     perc_certified = [str(round(value/len(all_certified)*100, 1))+'%' for value in values]
     return (top, values, perc_certified)
 
+def write_file(val, top, values, perc_certified):
+    '''
+    Write data to output file
+    
+    Argument:
+    val: First column of the output file
+    top, values, perc_certified: outputs of extract_certified_data (values of the output file)
+    '''
+    if val == 'occupation':
+        header_occ = ['TOP_OCCUPATIONS','NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
+        output_file = output_loc_occ
+    else:
+        header_occ = ['TOP_STATES','NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
+        output_file = output_loc_state
+    with open (os.getcwd()+'/'+output_file, 'w') as file:
+        for i in header_occ:
+            file.write(i)
+            if i == 'PERCENTAGE':
+                file.write('\n')
+            else:
+                file.write(';')
+        for i,j,k in zip(top, values, perc_certified):
+            file.write(i); file.write(';'); file.write(str(j)); file.write(';'); file.write(k); file.write('\n')
+
 # Read the data and extract the required information
 with open(r''+os.getcwd()+'/'+input_loc, encoding="utf8") as soap:
     header = soap.readline() # read the header
@@ -155,29 +179,10 @@ with open(r''+os.getcwd()+'/'+input_loc, encoding="utf8") as soap:
 
 # Top occupational data
 top, values, perc_certified = extract_certified_data(list_data, 'title', extract_top(list_data, 'title'))
-
-#r''+os.getcwd()+
-header_occ = ['TOP_OCCUPATIONS','NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
-with open (output_loc_occ, 'w') as file:
-    for i in header_occ:
-        file.write(i)
-        if i == 'PERCENTAGE':
-            file.write('\n')
-        else:
-            file.write(';')
-    for i,j,k in zip(top, values, perc_certified):
-        file.write(i); file.write(';'); file.write(str(j)); file.write(';'); file.write(k); file.write('\n')
+#writing occupation file
+write_file('occupation', top, values, perc_certified)
 
 # Top states data
 top, values, perc_certified = extract_certified_data(list_data, 'state', extract_top(list_data, 'state'))
-#r''+os.getcwd()+
-header_occ = ['TOP_STATES','NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
-with open (output_loc_state, 'w') as file:
-    for i in header_occ:
-        file.write(i)
-        if i == 'PERCENTAGE':
-            file.write('\n')
-        else:
-            file.write(';')
-    for i,j,k in zip(top, values, perc_certified):
-        file.write(i); file.write(';'); file.write(str(j)); file.write(';'); file.write(k); file.write('\n')
+# writing to output file
+write_file('states', top, values, perc_certified)
