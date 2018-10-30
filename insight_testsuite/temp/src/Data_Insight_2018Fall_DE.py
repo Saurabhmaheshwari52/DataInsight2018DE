@@ -6,7 +6,8 @@ import os
 import re
 
 # extracting input and output directory information from run.sh file
-with open(os.getcwd()+'\\run.sh', 'r')as file:
+#os.getcwd()+
+with open('run.sh', 'r')as file:
     src = file.read()
 run_list = src.split('./')
 input_loc = run_list[1].strip()
@@ -155,15 +156,16 @@ with open(r''+os.getcwd()+'/'+input_loc, encoding="utf8") as soap:
 # Top occupational data
 top, values, perc_certified = extract_certified_data(list_data, 'title', extract_top(list_data, 'title'))
 
-with open (r''+os.getcwd()+'/'+output_loc_occ, 'w') as file:
+#r''+os.getcwd()+
+with open (output_loc_occ, 'w') as file:
     file.write('TOP_OCCUPATIONS;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE \n')
     for i in range(len(top)):
         file.write((top[i]) +';' +str(values[i])+';'+str(perc_certified[i]) + '\n')
 
 # Top states data
 top, values, perc_certified = extract_certified_data(list_data, 'state', extract_top(list_data, 'state'))
-
-with open (r''+os.getcwd()+'/'+output_loc_state, 'w') as file:
+#r''+os.getcwd()+
+with open (output_loc_state, 'w') as file:
     file.write('TOP_STATES;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE \n')
     for i in range(len(top)):
         file.write((top[i]) +';' +str(values[i])+';'+str(perc_certified[i]) + '\n')
