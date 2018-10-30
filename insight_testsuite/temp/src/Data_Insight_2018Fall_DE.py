@@ -157,16 +157,27 @@ with open(r''+os.getcwd()+'/'+input_loc, encoding="utf8") as soap:
 top, values, perc_certified = extract_certified_data(list_data, 'title', extract_top(list_data, 'title'))
 
 #r''+os.getcwd()+
+header_occ = ['TOP_OCCUPATIONS','NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
 with open (output_loc_occ, 'w') as file:
-    file.write('TOP_OCCUPATIONS;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE \n')
-    for i in range(len(top)):
-        file.write((top[i]) +';' +str(values[i])+';'+str(perc_certified[i]) + '\n')
+    for i in header_occ:
+        file.write(i)
+        if i == 'PERCENTAGE':
+            file.write('\n')
+        else:
+            file.write(';')
+    for i,j,k in zip(top, values, perc_certified):
+        file.write(i); file.write(';'); file.write(str(j)); file.write(';'); file.write(k); file.write('\n')
 
 # Top states data
 top, values, perc_certified = extract_certified_data(list_data, 'state', extract_top(list_data, 'state'))
 #r''+os.getcwd()+
+header_occ = ['TOP_STATES','NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
 with open (output_loc_state, 'w') as file:
-    file.write('TOP_STATES;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE \n')
-    for i in range(len(top)):
-        file.write((top[i]) +';' +str(values[i])+';'+str(perc_certified[i]) + '\n')
-
+    for i in header_occ:
+        file.write(i)
+        if i == 'PERCENTAGE':
+            file.write('\n')
+        else:
+            file.write(';')
+    for i,j,k in zip(top, values, perc_certified):
+        file.write(i); file.write(';'); file.write(str(j)); file.write(';'); file.write(k); file.write('\n')
