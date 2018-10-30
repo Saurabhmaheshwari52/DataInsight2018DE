@@ -6,7 +6,6 @@ import os
 import re
 
 # extracting input and output directory information from run.sh file
-#os.getcwd()+
 with open('run.sh', 'r')as file:
     src = file.read()
 run_list = src.split('./')
@@ -76,26 +75,6 @@ def clear_string(string, op = '"'):
         start = end+1
     return(''.join(string_part))
 
-def break_tie(list_sorted):
-    '''
-    To break the tie from the sorted list.
-    
-    Arguments:
-    list_sorted: The sorted dictionary, mapping names to sorted certified total values
-    '''
-    ks = [i[0] for i in list_sorted[:10]]
-    vals = [i[1] for i in list_sorted[:10]]
-    ind = []
-    for i in range(len(vals)):
-        if (vals[i]-vals[i-1]) == 0: ind.append(i)
-    if len(ind)>0:
-        for i in range(len(ind)):
-            if ks[ind[i]]<ks[ind[i]-1]:
-                dummy = ks[ind[i]-1]
-                ks[ind[i]-1] = ks[ind[i]]
-                ks[ind[i]] = dummy
-    return(ks, vals)
-
 def extract_top(data, val):
     '''
     To extract the top (most frequent) field names.
@@ -129,7 +108,8 @@ def extract_certified_data(data, val, top_val):
     for v in val_certified:
         val_certified_dict[v] = val_certified_dict.get(v,0)+1
     val_certified_sorted = sorted(val_certified_dict.items(), key = lambda k: (-k[1],k[0]))
-    top, values = break_tie(val_certified_sorted)
+    top = [i for i,_ in val_certified_sorted]
+    values = [i for _,i in val_certified_sorted]
     perc_certified = [str(round(value/len(all_certified)*100, 1))+'%' for value in values]
     return (top, values, perc_certified)
 
