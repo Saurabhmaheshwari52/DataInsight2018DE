@@ -5,14 +5,6 @@
 import os
 import re
 
-# extracting input and output directory information from run.sh file
-with open('run.sh', 'r')as file:
-    src = file.read()
-run_list = src.split('./')
-input_loc = run_list[1].strip()
-output_loc_occ = run_list[2].strip()
-output_loc_state = run_list[3].strip()
-
 def find_index(header):
     '''
     To find the index of 'STATUS', 'OCCUPATIONAL NAME' and 'WORK STATE' from the header row.
@@ -136,6 +128,15 @@ def write_file(val, top, values, perc_certified):
                 file.write(';')
         for i,j,k in zip(top, values, perc_certified):
             file.write(i); file.write(';'); file.write(str(j)); file.write(';'); file.write(k); file.write('\n')
+
+#------------------------------------------------------------------------------
+# extracting input and output directory information from run.sh file
+with open('run.sh', 'r')as file:
+    src = file.read()
+run_list = src.split('./')
+input_loc = run_list[1].strip()
+output_loc_occ = run_list[2].strip()
+output_loc_state = run_list[3].strip()
 
 # Read the data and extract the required information
 with open(r''+os.getcwd()+'/'+input_loc, encoding="utf8") as soap:
